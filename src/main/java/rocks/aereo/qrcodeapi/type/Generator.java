@@ -2,7 +2,6 @@ package rocks.aereo.qrcodeapi.type;
 
 import lombok.extern.java.Log;
 import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
 import net.glxn.qrgen.vcard.VCard;
 
 import java.io.ByteArrayOutputStream;
@@ -18,7 +17,7 @@ public class Generator {
     public Generator(Type type, Map<String, String> data) {
         this.type = type;
         this.data = data;
-        System.out.println("created: " + type.toString() + " || "+ data);
+        log.info("created: " + type.toString() + " || " + data);
     }
 
     public ByteArrayOutputStream generateQRCode() {
@@ -30,7 +29,6 @@ public class Generator {
             case WIFI:
                 return QRCode.from(encodeWIFI()).withSize(SIZE, SIZE).stream();
             case VCARD:
-                log.info("vc");
                 return QRCode.from(encodeVCard()).withSize(SIZE, SIZE).stream();
             default:
                 return QRCode.from("https://github.com/robineco").stream();
@@ -55,7 +53,6 @@ public class Generator {
     }
 
     private VCard encodeVCard() {
-        log.info("vcard gen");
         return new VCard(data.get("name"))
                 .setEmail(data.get("email"))
                 .setAddress(data.get("address"))
