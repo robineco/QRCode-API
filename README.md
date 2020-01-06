@@ -1,6 +1,8 @@
 # QRCode-API
 API that generates QRCodes
 
+![GitHub Profile Image](https://raw.githubusercontent.com/robineco/QRCode-API/master/QRCode_GitHub.png)
+
 ## Good To Know
 
 #### Default-Login:
