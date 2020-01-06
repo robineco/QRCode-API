@@ -19,7 +19,7 @@ localhost:8080/gen?type=text&&data=https://github.com
 
 ### WIFI Informations
 ```
-localhost:8080/gen?type=wifi&&auth=WPA&&ssid=networkName&&pw=password&&hidden=false
+localhost:8080/gen?type=wifi&&auth=WPA&&ssid=NETWORKNAME&&pw=PASSWORD&&hidden=false
 ```
 
 ### VCard
