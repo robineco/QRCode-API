@@ -1,5 +1,6 @@
 package rocks.aereo.qrcodeapi.controller;
 
+import net.glxn.qrgen.QRCode;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,8 @@ import rocks.aereo.qrcodeapi.type.Type;
 import rocks.aereo.qrcodeapi.type.WIFI;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class APIController {
@@ -19,38 +22,45 @@ public class APIController {
             path = "/gen",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public @ResponseBody
-    byte[] generate(@RequestParam MultiValueMap<String, String> params) {
-
+    public @ResponseBody byte[] generate(@RequestParam MultiValueMap<String, String> params) {
+        Map<String, String> data = new HashMap<>();
         ByteArrayOutputStream stream = null;
         if (params.containsKey("type")) {
             switch (params.getFirst("type")) {
                 case "text":
-                    Generator code = new Generator(Type.TEXT, params.getFirst("data"));
+                    data.put("text", params.getFirst("data"));
+                    Generator code = new Generator(Type.TEXT, data);
                     stream = code.generateQRCode();
                     break;
                 case "url":
-                    Generator url = new Generator(Type.URL, params.getFirst("data"));
+                    data.put("url", params.getFirst("data"));
+                    Generator url = new Generator(Type.URL, data);
                     stream = url.generateQRCode();
                     break;
                 case "wifi":
-                    Generator wifi = new Generator(Type.WIFI, createWifi(params));
+                    data.put("auth", params.getFirst("auth"));
+                    data.put("ssid", params.getFirst("ssid"));
+                    data.put("pw", params.getFirst("pw"));
+                    data.put("hidden", params.getFirst("hidden"));
+                    Generator wifi = new Generator(Type.WIFI, data);
                     stream = wifi.generateQRCode();
                     break;
+                case "vcard":
+                    data.put("name", params.getFirst("name"));
+                    data.put("email", params.getFirst("email"));
+                    data.put("address", params.getFirst("address"));
+                    data.put("company", params.getFirst("company"));
+                    data.put("tel", params.getFirst("tel"));
+                    data.put("web", params.getFirst("web"));
+                    Generator vcard = new Generator(Type.VCARD, data);
+                    stream = vcard.generateQRCode();
+                    break;
                 default:
+                stream = QRCode.from("https://github.com/robineco").stream();
             }
 
             return stream.toByteArray();
         }
         return "error".getBytes();
     }
-
-    private String createWifi(MultiValueMap<String, String> params) {
-        String auth = params.getFirst("auth");
-        String ssid = params.getFirst("ssid");
-        String password = params.getFirst("pw");
-        boolean isHidden = Boolean.parseBoolean(params.getFirst("hidden"));
-        return new WIFI(auth, ssid, password, isHidden).encodeData();
-    }
-
 }
