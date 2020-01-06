@@ -4,5 +4,6 @@ public enum Type {
     TEXT,
     URL,
     WIFI,
-    VCARD
+    VCARD,
+    GEO
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import rocks.aereo.qrcodeapi.type.Generator;
 import rocks.aereo.qrcodeapi.type.Type;
-import rocks.aereo.qrcodeapi.type.WIFI;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -55,8 +54,14 @@ public class APIController {
                     Generator vcard = new Generator(Type.VCARD, data);
                     stream = vcard.generateQRCode();
                     break;
+                case "geo":
+                    data.put("lat", params.getFirst("lat"));
+                    data.put("lon", params.getFirst("lon"));
+                    Generator geo = new Generator(Type.GEO, data);
+                    stream = geo.generateQRCode();
+                    break;
                 default:
-                stream = QRCode.from("https://github.com/robineco").stream();
+                    stream = QRCode.from("https://github.com/robineco").stream();
             }
 
             return stream.toByteArray();

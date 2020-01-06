@@ -30,6 +30,8 @@ public class Generator {
                 return QRCode.from(encodeWIFI()).withSize(SIZE, SIZE).stream();
             case VCARD:
                 return QRCode.from(encodeVCard()).withSize(SIZE, SIZE).stream();
+            case GEO:
+                return QRCode.from(encodeGEO()).withSize(SIZE, SIZE).stream();
             default:
                 return QRCode.from("https://github.com/robineco").stream();
         }
@@ -59,5 +61,9 @@ public class Generator {
                 .setCompany(data.get("company"))
                 .setPhonenumber(data.get("tel"))
                 .setWebsite(data.get("web"));
+    }
+
+    private String encodeGEO() {
+        return new GEO(data.get("lat"), data.get("lon")).encodeData();
     }
 }
