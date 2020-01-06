@@ -33,7 +33,7 @@ public class Generator {
             case GEO:
                 return QRCode.from(encodeGEO()).withSize(SIZE, SIZE).stream();
             default:
-                return QRCode.from("https://github.com/robineco").stream();
+                return QRCode.from("https://github.com/robineco").withSize(255, 255).stream();
         }
     }
 
