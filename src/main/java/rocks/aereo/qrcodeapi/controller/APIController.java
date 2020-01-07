@@ -1,5 +1,6 @@
 package rocks.aereo.qrcodeapi.controller;
 
+import lombok.extern.java.Log;
 import net.glxn.qrgen.QRCode;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
@@ -10,18 +11,29 @@ import org.springframework.web.bind.annotation.RestController;
 import rocks.aereo.qrcodeapi.type.Generator;
 import rocks.aereo.qrcodeapi.type.Type;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log
 @RestController
 public class APIController {
+
+    private final HttpServletRequest request;
+
+    public APIController(HttpServletRequest request) {
+        this.request = request;
+    }
+
 
     @GetMapping(
             path = "/gen",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public @ResponseBody byte[] generate(@RequestParam MultiValueMap<String, String> params) {
+    public @ResponseBody
+    byte[] generate(@RequestParam MultiValueMap<String, String> params) {
+        log.info(request.getRemoteAddr());
         Map<String, String> data = new HashMap<>();
         ByteArrayOutputStream stream = null;
         if (params.containsKey("type")) {
