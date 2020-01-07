@@ -43,4 +43,4 @@ localhost:8080/gen?type=geo&&lat=48.772707&&lon=9.176515
 * [QRCode Generator](https://github.com/kenglxn/QRGen) - QRCode generation api for java built on top ZXING
 
 ## License
-This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU License - see the [LICENSE](LICENSE) file for details
